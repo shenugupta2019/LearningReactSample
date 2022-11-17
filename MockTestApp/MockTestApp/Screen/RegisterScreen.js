@@ -11,7 +11,10 @@ import {
   ScrollView,
   ImageBackground,
   Button,
-  Alert
+  Alert,
+  SafeAreaView,
+  Platform,
+  Pressable,
 } from 'react-native';
 
 import Loader from '../Components/Loader';
@@ -19,10 +22,12 @@ import Loader from '../Components/Loader';
 const RegisterScreen = (props) => {
     const [placeHolderText, setPlaceHolderText] = React.useState('PlaceHolder');
     const [placeHolderOtherText, setPlaceHolderOtherText] = React.useState('*');
+    const { onPress, title = 'Save' } = props;
   
     return (
-      <View style={{flex: 1, alignContent: 'flex-start', justifyContent: 'flex-start'}}>
-         <ImageBackground source={require('../Image/newUser.png')}  resizeMode="cover" style={styles.image}>
+      <View style={styles.safeAreaView}>
+         <ImageBackground source={require('../Image/newUser.png')}  resizeMode= {Platform.OS === 'ios' ?  "cover" : "stretch"} style={styles.image}>
+         <ScrollView>
          <Text style={styles.registerText}> Register</Text>
 
          <View style={styles.textInputBg}>
@@ -109,12 +114,11 @@ const RegisterScreen = (props) => {
         </TextInput>
         </View>
         <View style={styles.createAccount}>
-        <Button style={styles.buttonView}
-        title="CREATE ACCOUNT"
-        color="white"
-        onPress={() => Alert.alert('Simple Button pressed')}
-      />
+        <Pressable style={styles.button} onPress={onPress}>
+      <Text style={styles.text}>{title}</Text>
+    </Pressable>
        </View>
+       </ScrollView>
         </ImageBackground>
          </View>
     );
@@ -179,7 +183,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       buttonView:  {
+       // color: 'white',
+        padding: 20,
+      },
+      safeAreaView: {
+       // paddingTop: Platform.OS === 'android' ? 25 : 0,
+        flex: 1,
+        alignContent: 'flex-start',
+        justifyContent: 'flex-start',
+      },
+      button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: '#076082',
+      },
+      text: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
         color: 'white',
-        padding: 20
-      }
+      },
   });
